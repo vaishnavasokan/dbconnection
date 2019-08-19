@@ -25,21 +25,6 @@ router.get("/new",function(req,res)
     res.render("newemp")
 })
 
-router.get("/view",function(req,res)
-{
-    emp.find({},function(err,result)
-    {
-        if(err)
-        throw err;
-        else
-        {
-            console.log(result);
-            res.render("viewemp",{empdata:result});
-        }
-            
-    })
-})
-
 router.post("/add",function(req,res)
 {
     var e1=new emp();
@@ -57,9 +42,79 @@ router.post("/add",function(req,res)
 })
 
 
-router.get("/view",function(req,res)
+/*router.get("/view",function(req,res)
 {
     res.send("View Employee")
+})*/
+
+router.get("/view",function(req,res)
+{
+    emp.find({},function(err,result)
+    {
+        if(err)
+        throw err;
+        else
+        {
+            //console.log(result);
+            res.render("viewemp",{empdata:result});
+        }
+            
+    })
+})
+
+router.get("/edit/:id",function(req,res)
+{
+    var id=req.params.id;
+    console.log(id);
+    //emp.findOne({},function(err,result))
+    //empdata.eid
+    emp.find({eid:id},function(err,result)
+    {
+        if(err)
+        throw err;
+        else
+        {
+            console.log(result);
+            res.render("editemp",{empdata:result});
+        }      
+    })
+
+});
+
+router.post("/update",function(req,res)
+{
+    emp.update({eid:req.body.eid},{$set:{ename:req.body.ename,salary:req.body.sal}},function(err,result)
+    {
+        if(err)
+        throw err;
+        else
+        emp.find({},function(err,result)
+        {
+            if(err)
+            throw err;
+            else
+            {
+                console.log(result);
+                res.render("viewemp",{empdata:result});
+            }
+        })
+    })
+    
+})
+
+router.get("/delete/:id", function(req,res)
+{
+    var id=req.params.id;
+    emp.deleteOne({eid:id},function(err)
+    {
+        if(err)
+        throw err;
+        else
+        {
+            //console.log(result);
+            res.redirect("/emp/view");
+        }
+    })
 })
 
 module.exports=router;

@@ -21,6 +21,8 @@
             <td><%= empdata[i].eid%></td>
             <td><%= empdata[i].ename%></td>
             <td><%= empdata[i].salary%></td>
+            <td><a href="/emp/edit/<%= empdata[i].eid%>">Edit</a></td>
+            <td><a href="/emp/delete/<%= empdata[i].eid%>">Delete</a></td>
         </tr>
             <% }%>
             </tbody>
